@@ -1,3 +1,5 @@
+import random
+
 from fastapi import HTTPException
 from starlette import status
 
@@ -15,3 +17,7 @@ def prefetch_movie_by_id(movie_id: int):
         status_code=status.HTTP_404_NOT_FOUND,
         detail=f"Movie with id {movie_id} not found",
     )
+
+
+def create_random_id():
+    return random.randint(10, 20)
