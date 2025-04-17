@@ -1,5 +1,3 @@
-import random
-
 from fastapi import HTTPException
 from starlette import status
 
@@ -8,6 +6,7 @@ from schemas.movie import SMovie
 
 
 def prefetch_movie_by_id(movie_id: int):
+
     movie: SMovie | None = next(
         (movie for movie in MOVIES if movie.id == movie_id), None
     )
@@ -17,7 +16,3 @@ def prefetch_movie_by_id(movie_id: int):
         status_code=status.HTTP_404_NOT_FOUND,
         detail=f"Movie with id {movie_id} not found",
     )
-
-
-def create_random_id():
-    return random.randint(10, 20)

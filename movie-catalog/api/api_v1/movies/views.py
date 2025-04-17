@@ -1,12 +1,12 @@
+import random
 from typing import Annotated
 
-from fastapi import APIRouter, Form, status
+from fastapi import APIRouter, status
 from fastapi.params import Depends
 
 from api.api_v1.movies.crud import MOVIES
-from api.api_v1.movies.dependencies import prefetch_movie_by_id, create_random_id
-from schemas.movie import SMovie
-
+from api.api_v1.movies.dependencies import prefetch_movie_by_id
+from schemas.movie import SMovie, SMovieCreate
 
 router = APIRouter(
     prefix="/movies",
@@ -36,14 +36,9 @@ def get_film_by_id(movie: Annotated[SMovie, Depends(prefetch_movie_by_id)]):
     status_code=status.HTTP_201_CREATED,
 )
 def create_movie(
-    id: Annotated[int, Depends(create_random_id)],
-    name: Annotated[str, Form()],
-    description: Annotated[str, Form()],
-    release_year: Annotated[int, Form()],
+    movie_create: SMovieCreate,
 ):
     return SMovie(
-        id=id,
-        name=name,
-        description=description,
-        release_year=release_year,
+        id=random.randint(10, 20),
+        **movie_create.model_dump(),
     )
