@@ -4,7 +4,7 @@ from typing import Annotated
 from fastapi import APIRouter, status
 from fastapi.params import Depends
 
-from api.api_v1.movies.crud import MOVIES
+from api.api_v1.movies.crud import storage
 from api.api_v1.movies.dependencies import prefetch_movie_by_slug
 from schemas.movie import SMovie, SMovieCreate
 
@@ -19,7 +19,7 @@ router = APIRouter(
     response_model=list[SMovie],
 )
 def get_all_movies():
-    return MOVIES
+    return storage.get()
 
 
 @router.get(
@@ -38,6 +38,4 @@ def get_film_by_slug(movie: Annotated[SMovie, Depends(prefetch_movie_by_slug)]):
 def create_movie(
     movie_create: SMovieCreate,
 ):
-    return SMovie(
-        **movie_create.model_dump(),
-    )
+    return storage.create(movie_create)

@@ -1,34 +1,54 @@
-from schemas.movie import SMovie
+from pydantic import BaseModel
 
-MOVIES = [
-    SMovie(
+from schemas.movie import SMovie, SMovieCreate
+
+
+class Storage(BaseModel):
+    slug_to_smovies: dict[str, SMovie] = {}
+
+    def get(self) -> list[SMovie]:
+        return list(self.slug_to_smovies.values())
+
+    def get_by_slug(self, slug) -> SMovie | None:
+        return self.slug_to_smovies.get(slug)
+
+    def create(self, smovie_in: SMovieCreate) -> SMovie:
+        smovie = SMovie(**(smovie_in.model_dump()))
+        self.slug_to_smovies[smovie_in.slug] = smovie
+        return smovie
+
+
+storage = Storage()
+
+storage.create(
+    SMovieCreate(
         slug="brat",
         name="Брат",
         description="История демобилизованного солдата Данилы Багрова, который приезжает в Петербург к брату, но оказывается втянут в криминальный мир города.",
         release_year=1997,
-    ),
-    SMovie(
+    )
+)
+storage.create(
+    SMovieCreate(
         slug="irony-of-fate",
         name="Ирония судьбы, или С лёгким паром!",
         description="В новогоднюю ночь москвич Женя Лукашин по ошибке оказывается в Ленинграде, в квартире незнакомой женщины, что становится началом невероятной истории любви.",
         release_year=1975,
-    ),
-    SMovie(
+    )
+)
+storage.create(
+    SMovieCreate(
         slug="stalker",
         name="Сталкер",
         description="Философская притча о трёх людях, отправившихся в загадочную Зону в поисках комнаты, где якобы исполняются желания.",
         release_year=1979,
-    ),
-    SMovie(
+    )
+)
+storage.create(
+    SMovieCreate(
         slug="moscow-doesnt-believe-in-tears",
         name="Москва слезам не верит",
         description="История трёх подруг, приехавших покорять Москву в поисках счастья и любви на протяжении двух десятилетий их жизни.",
         release_year=1980,
-    ),
-    SMovie(
-        slug="viy",
-        name="Вий",
-        description="Экранизация повести Н.В. Гоголя о студенте-философе, вынужденном провести три ночи у гроба ведьмы в старой церкви.",
-        release_year=1967,
-    ),
-]
+    )
+)
