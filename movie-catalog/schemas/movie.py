@@ -6,7 +6,6 @@ from pydantic import BaseModel
 
 
 class SMovieBase(BaseModel):
-    slug: str
     name: str
     description: str
     release_year: int
@@ -17,8 +16,18 @@ class SMovie(SMovieBase):
     Модель фильма
     """
 
+    slug: str
+
 
 class SMovieCreate(SMovieBase):
     """
     Модель для создания фильма
+    """
+
+    slug: str
+
+
+class SMovieUpdate(SMovieBase):
+    """
+    Модель для обновления фильма
     """

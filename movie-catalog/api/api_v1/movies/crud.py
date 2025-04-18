@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from schemas.movie import SMovie, SMovieCreate
+from schemas.movie import SMovie, SMovieCreate, SMovieUpdate
 
 
 class Storage(BaseModel):
@@ -9,19 +9,47 @@ class Storage(BaseModel):
     def get(self) -> list[SMovie]:
         return list(self.slug_to_smovies.values())
 
-    def get_by_slug(self, slug) -> SMovie | None:
+    def get_by_slug(
+        self,
+        slug,
+    ) -> SMovie | None:
         return self.slug_to_smovies.get(slug)
 
-    def create(self, smovie_in: SMovieCreate) -> SMovie:
+    def create(
+        self,
+        smovie_in: SMovieCreate,
+    ) -> SMovie:
         smovie = SMovie(**(smovie_in.model_dump()))
         self.slug_to_smovies[smovie_in.slug] = smovie
         return smovie
 
-    def delete_by_slug(self, slug: str):
-        self.slug_to_smovies.pop(slug, None)
+    def delete_by_slug(
+        self,
+        slug: str,
+    ):
+        self.slug_to_smovies.pop(
+            slug,
+            None,
+        )
 
-    def delete(self, movie: SMovie):
+    def delete(
+        self,
+        movie: SMovie,
+    ):
         self.delete_by_slug(slug=movie.slug)
+
+    def update(
+        self,
+        movie: SMovie,
+        movie_in: SMovieUpdate,
+    ):
+        for field_name, value in movie_in:
+            setattr(
+                movie,
+                field_name,
+                value,
+            )
+        return movie
 
 
 storage = Storage()
