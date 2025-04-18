@@ -1,7 +1,11 @@
 from fastapi import APIRouter, status
 
 from api.api_v1.movies.crud import storage
-from schemas.movie import SMovie, SMovieCreate
+from schemas.movie import (
+    SMovie,
+    SMovieCreate,
+    SMovieRead,
+)
 
 router = APIRouter(
     prefix="/movies",
@@ -11,7 +15,7 @@ router = APIRouter(
 
 @router.get(
     "/",
-    response_model=list[SMovie],
+    response_model=list[SMovieRead],
 )
 def get_all_movies():
     return storage.get()
@@ -19,7 +23,7 @@ def get_all_movies():
 
 @router.post(
     "/",
-    response_model=SMovie,
+    response_model=SMovieRead,
     status_code=status.HTTP_201_CREATED,
 )
 def create_movie(

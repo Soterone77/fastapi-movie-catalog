@@ -16,6 +16,15 @@ class SMovie(SMovieBase):
     Модель фильма
     """
 
+    notes: str = "pu-pu-pu"
+    slug: str
+
+
+class SMovieRead(SMovieBase):
+    """
+    Модель фильма для чтения данных
+    """
+
     slug: str
 
 

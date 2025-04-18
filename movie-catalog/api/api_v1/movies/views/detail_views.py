@@ -9,6 +9,7 @@ from schemas.movie import (
     SMovie,
     SMovieUpdate,
     SMoviePartialUpdate,
+    SMovieRead,
 )
 
 router = APIRouter(
@@ -35,7 +36,7 @@ MovieBySlug = Annotated[
 
 @router.get(
     "/",
-    response_model=SMovie,
+    response_model=SMovieRead,
 )
 def get_film_by_slug(
     movie: MovieBySlug,
@@ -60,7 +61,7 @@ def delete_movie(
 def delete_movie(
     movie: MovieBySlug,
     movie_in: SMovieUpdate,
-) -> SMovie:
+) -> SMovieRead:
     return storage.update(
         movie=movie,
         movie_in=movie_in,
@@ -74,7 +75,7 @@ def delete_movie(
 def delete_movie(
     movie: MovieBySlug,
     movie_in: SMoviePartialUpdate,
-) -> SMovie:
+) -> SMovieRead:
     return storage.partial_update(
         movie=movie,
         movie_in=movie_in,
