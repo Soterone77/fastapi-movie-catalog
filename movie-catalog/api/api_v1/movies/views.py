@@ -26,7 +26,12 @@ def get_all_movies():
     "/{slug}",
     response_model=SMovie,
 )
-def get_film_by_slug(movie: Annotated[SMovie, Depends(prefetch_movie_by_slug)]):
+def get_film_by_slug(
+    movie: Annotated[
+        SMovie,
+        Depends(prefetch_movie_by_slug),
+    ],
+):
     return movie
 
 
@@ -39,3 +44,28 @@ def create_movie(
     movie_create: SMovieCreate,
 ):
     return storage.create(movie_create)
+
+
+@router.delete(
+    "/{slug}/",
+    status_code=status.HTTP_204_NO_CONTENT,
+    responses={
+        status.HTTP_404_NOT_FOUND: {
+            "description": "Movie not found",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "detail": "Movie with slug 'slug' not found",
+                    }
+                }
+            },
+        },
+    },
+)
+def delete_movie(
+    movie: Annotated[
+        SMovie,
+        Depends(prefetch_movie_by_slug),
+    ],
+) -> None:
+    storage.delete(movie=movie)
