@@ -31,3 +31,13 @@ class SMovieUpdate(SMovieBase):
     """
     Модель для обновления фильма
     """
+
+
+class SMoviePartialUpdate(SMovieBase):
+    """
+    Модель для обновления фильма
+    """
+
+    name: str | None = None
+    description: str | None = None
+    release_year: int | None = None

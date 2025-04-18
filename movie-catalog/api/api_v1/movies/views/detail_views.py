@@ -5,7 +5,11 @@ from fastapi.params import Depends
 from starlette import status
 from api.api_v1.movies.crud import storage
 from api.api_v1.movies.dependencies import prefetch_movie_by_slug
-from schemas.movie import SMovie, SMovieUpdate
+from schemas.movie import (
+    SMovie,
+    SMovieUpdate,
+    SMoviePartialUpdate,
+)
 
 router = APIRouter(
     prefix="/{slug}",
@@ -58,6 +62,20 @@ def delete_movie(
     movie_in: SMovieUpdate,
 ) -> SMovie:
     return storage.update(
+        movie=movie,
+        movie_in=movie_in,
+    )
+
+
+@router.patch(
+    "/",
+    status_code=status.HTTP_200_OK,
+)
+def delete_movie(
+    movie: MovieBySlug,
+    movie_in: SMoviePartialUpdate,
+) -> SMovie:
+    return storage.partial_update(
         movie=movie,
         movie_in=movie_in,
     )
