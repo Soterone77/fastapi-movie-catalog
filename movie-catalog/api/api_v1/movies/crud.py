@@ -1,6 +1,6 @@
 from pydantic import BaseModel, ValidationError
 
-from core.core import MOVIES_STORAGE_FILEPATH
+from core.config import MOVIES_STORAGE_FILEPATH
 from schemas.movie import (
     SMovie,
     SMovieCreate,
