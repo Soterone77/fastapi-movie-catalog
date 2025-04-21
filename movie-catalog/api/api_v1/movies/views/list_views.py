@@ -1,4 +1,8 @@
-from fastapi import APIRouter, status
+from fastapi import (
+    APIRouter,
+    status,
+    BackgroundTasks,
+)
 
 from api.api_v1.movies.crud import storage
 from schemas.movie import (
@@ -28,5 +32,7 @@ def get_all_movies():
 )
 def create_movie(
     movie_create: SMovieCreate,
+    background_task: BackgroundTasks,
 ):
+    background_task.add_task(storage.save_state)
     return storage.create(movie_create)

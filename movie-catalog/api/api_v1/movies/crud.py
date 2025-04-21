@@ -59,7 +59,6 @@ class Storage(BaseModel):
     ) -> SMovie:
         smovie = SMovie(**(smovie_in.model_dump()))
         self.slug_to_smovies[smovie_in.slug] = smovie
-        self.save_state()
         log.info("Saved new movie with slug - %s.", smovie.slug)
         return smovie
 
@@ -71,7 +70,6 @@ class Storage(BaseModel):
             slug,
             None,
         )
-        self.save_state()
 
     def delete(
         self,
@@ -90,7 +88,6 @@ class Storage(BaseModel):
                 field_name,
                 value,
             )
-        self.save_state()
         return movie
 
     def partial_update(
@@ -105,7 +102,6 @@ class Storage(BaseModel):
                 field_name,
                 value,
             )
-        self.save_state()
         return movie
 
 
