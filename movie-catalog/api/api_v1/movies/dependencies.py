@@ -5,7 +5,7 @@ from fastapi import (
     HTTPException,
     BackgroundTasks,
     Request,
-    Query,
+    Header,
     status,
 )
 
@@ -52,7 +52,7 @@ def save_storage_state(
 
 def api_token_required_for_unsafe_methods(
     request: Request,
-    api_token: Annotated[str, Query()] = "",
+    api_token: Annotated[str, Header()] = "",
 ):
     if request.method not in UNSAFE_METHODS:
         return
