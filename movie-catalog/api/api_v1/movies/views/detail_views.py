@@ -53,9 +53,7 @@ def get_film_by_slug(
 )
 def delete_movie(
     movie: MovieBySlug,
-    background_task: BackgroundTasks,
 ) -> None:
-    background_task.add_task(storage.save_state)
     storage.delete(movie=movie)
 
 
@@ -66,9 +64,7 @@ def delete_movie(
 def update_movie(
     movie: MovieBySlug,
     movie_in: SMovieUpdate,
-    background_task: BackgroundTasks,
 ) -> SMovieRead:
-    background_task.add_task(storage.save_state)
     return storage.update(
         movie=movie,
         movie_in=movie_in,
@@ -82,9 +78,7 @@ def update_movie(
 def update_movie_partial(
     movie: MovieBySlug,
     movie_in: SMoviePartialUpdate,
-    background_task: BackgroundTasks,
 ) -> SMovieRead:
-    background_task.add_task(storage.save_state)
     return storage.partial_update(
         movie=movie,
         movie_in=movie_in,
