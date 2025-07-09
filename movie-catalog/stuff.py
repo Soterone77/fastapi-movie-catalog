@@ -13,7 +13,7 @@ def main():
     print(redis.ping())
     redis.set("name", "Nikita")
     redis.set("foo", "bar")
-    redis.set("number", "42")
+    redis.set("number", "43")
     print("name", redis.get("name"))
     print(
         [
