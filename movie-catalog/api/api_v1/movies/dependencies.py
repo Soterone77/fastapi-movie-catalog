@@ -68,15 +68,16 @@ def save_storage_state(
         log.info("Add background task to  save storage")
 
 
-def validate_api_token(api_token: HTTPAuthorizationCredentials):
-    if redis_tokens.sismember(
-        REDIS_TOKENS_SET_NAME,
+def validate_api_token(
+    api_token: HTTPAuthorizationCredentials,
+):
+    if redis_tokens.token_exist(
         api_token.credentials,
     ):
         return
     raise HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Invalid API Token",
+        detail="Invalid API token",
     )
 
 
